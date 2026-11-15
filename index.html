@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="tg"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Заправкаи электромобил</title>
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--tx:#14202b;--mu:#667;--g:#2e9d57;--y:#f0b400;--r:#d9363e;--b:#3b7ddd;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101418;--card:#1b222a;--tx:#eef2f5;--mu:#9aa5b0}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px system-ui,sans-serif;padding:10px}
+h1{font-size:18px;margin:4px 0 8px}h3{margin:6px 0}
+nav{display:flex;gap:6px;margin-bottom:10px}
+button{border:0;border-radius:10px;padding:10px 14px;font:inherit;font-weight:600;background:var(--b);color:#fff;cursor:pointer}
+button.s{background:var(--mu)}button.rd{background:var(--r)}button.gr{background:var(--g)}
+nav button{flex:1;background:var(--card);color:var(--tx)}nav button.on{background:var(--b);color:#fff}
+input{width:100%;padding:10px;border-radius:10px;border:1px solid var(--mu);background:var(--card);color:var(--tx);font:inherit;margin:4px 0}
+.card{background:var(--card);border-radius:14px;padding:12px;margin-bottom:10px}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.col{background:var(--card);border-radius:10px;padding:4px;display:flex;flex-direction:column;gap:4px;text-align:center}
+.col b{font-size:11px;color:var(--mu)}
+.cell{border-radius:8px;min-height:92px;padding:3px;font-size:11px;color:#fff;display:flex;flex-direction:column;justify-content:center;align-items:center;cursor:pointer;border:3px solid transparent;word-break:break-all}
+.g{background:var(--g)}.y{background:var(--y);color:#222}.b{background:var(--b)}.q{border-color:var(--r)}
+.blink{background:var(--g);animation:bl 1s infinite}@keyframes bl{50%{opacity:.45}}
+.cell .c{font-size:22px}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:4px;border-bottom:1px solid #8884;text-align:left}
+#modal{position:fixed;inset:0;background:#0008;display:flex;align-items:center;justify-content:center;padding:14px;z-index:9}
+#modal[hidden]{display:none}.box{background:var(--card);border-radius:14px;padding:16px;width:100%;max-width:420px;max-height:90vh;overflow:auto}
+.row{display:flex;gap:6px;margin-top:8px}.row button{flex:1}.mu{color:var(--mu);font-size:12px}
+.lg{font-size:12px;max-height:150px;overflow:auto}
+.scene{transform:perspective(480px) rotateX(30deg);transform-origin:50% 100%;background:linear-gradient(#667,#2a2f36);border-radius:12px;padding:8px 4px 12px;margin:10px 0 18px;box-shadow:0 14px 18px #0006}
+.wall{height:12px;border-radius:6px;background:linear-gradient(#ddd,#777);margin-bottom:2px}
+.urow,.ql{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.unit{display:flex;flex-direction:column;align-items:center}
+.post{width:12px;height:34px;background:linear-gradient(90deg,#ccc,#666);border-radius:4px 4px 2px 2px;margin-bottom:-6px;position:relative;z-index:1}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:2px;width:100%;filter:drop-shadow(0 6px 4px #0007)}
+.sp{height:76px;font-size:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;clip-path:polygon(10% 0,100% 0,90% 100%,0 100%);overflow:hidden;line-height:1.2}
+.sp.g{background:linear-gradient(#7dffa6,#1fd35a);color:#063;font-weight:700}.sp.y{background:linear-gradient(#ffe45c,#f0a800);color:#222}.sp.b{background:linear-gradient(#6aa8ff,#2f6fd6);color:#fff}.sp.x{background:linear-gradient(#999,#555);color:#fff}.sp.blink{background:#ffd23c;color:#222;animation:bl2 1s infinite}@keyframes bl2{50%{background:#5dff8f}}.post::after{content:"";position:absolute;top:6px;left:3px;width:6px;height:6px;border-radius:50%;background:#5dff8f;box-shadow:0 0 6px #5dff8f}
+.sp .c{font-size:20px}
+.ql{margin-top:18px}.qs{height:62px;background:#d9363e55;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;clip-path:polygon(10% 0,100% 0,90% 100%,0 100%)}.qs.f{background:linear-gradient(#ff7a7a,#d9363e);color:#fff}.qs .c{font-size:18px}
+@media print{body>*:not(#modal){display:none}#modal{position:static;background:none}.noprint{display:none}.box{max-height:none;color:#000;background:#fff}}
+</style></head><body>
+<h1>⚡ Заправкаи электромобил <span id="sv" style="font-size:12px"></span></h1>
+<nav id="nav"><button id="t1" class="on" onclick="tab(1)">Ронанда</button><button id="t2" onclick="tab(2)">Кассир</button><button id="t3" onclick="tab(3)">Соҳиб</button></nav>
+<div id="st"></div><div id="rq"></div><div id="live"></div>
+<div id="modal" hidden></div>
+<script>
+const K='ev1',$=id=>document.getElementById(id);
+const QP=new URLSearchParams(location.search);const DB_FIXED='';const DB=(DB_FIXED||QP.get('db')||(()=>{try{return localStorage.getItem('evdb')}catch(e){}})()||'').replace(/\/+$/,'');if(QP.get('db'))try{localStorage.setItem('evdb',DB)}catch(e){}
+const D={block:[],shiftStart:Date.now(),slots:Array(10).fill(null),q:[],log:[],ses:[],arch:[],price:2,rate:1,mode:'pct',live:0,pmin:1,code:'0000',req:[],nt:[],rc:[],qrImg:'',wa:'',pin:'1234',over:60,me:null};
+let S=D;try{const s=JSON.parse(localStorage.getItem(K));if(s)S=Object.assign({},D,s)}catch(e){}
+S.arch=S.arch.filter(a=>Date.now()-a.d<30*864e5);S.mode='pct';S.live=0;S.rc=S.rc.filter(r=>r.exp>Date.now());
+const SH=['slots','q','req','ses','log','nt','rc','arch','block','price','wa','pin','code','qrImg','shiftStart','over'];
+let last={},ready=0,rt;
+function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}if(ready)SH.forEach(k=>pk(k))}
+function pk(k){if(!DB)return;const j=JSON.stringify(S[k]);if(j===undefined||j===last[k])return;last[k]=j;fetch(DB+'/s/'+k+'.json',{method:'PUT',body:JSON.stringify(j)}).catch(()=>{last[k]=0})}
+function sv(t){const e=$('sv');if(e)e.textContent=t}
+function sched(){clearTimeout(rt);rt=setTimeout(()=>{live();const a=document.activeElement;if(!(a&&a.tagName=='INPUT'))stat()},60)}
+function ap(k,v){if(!SH.includes(k)||typeof v!='string'||v===last[k])return;try{S[k]=JSON.parse(v);last[k]=v;sched()}catch(e){}}
+function conn(){if(!DB){sv('⚠️ сервер нест');return}
+ const es=new EventSource(DB+'/s.json');
+ es.onopen=()=>sv('🟢');es.onerror=()=>sv('🔴');
+ es.addEventListener('put',e=>{const m=JSON.parse(e.data);
+  if(m.path=='/'){const d=m.data||{};SH.forEach(k=>{if(k in d)ap(k,d[k])});ready=1;SH.forEach(k=>{if(!(k in d))pk(k)})}
+  else ap(m.path.slice(1),m.data)});
+ es.addEventListener('patch',e=>{const m=JSON.parse(e.data);for(const k in m.data)ap(k,m.data[k])})}
+let T=1,adm=false,sec='set';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const hm=t=>new Date(t).toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'});
+const dur=ms=>{ms=Math.max(0,ms)/1e3|0;const h=ms/3600|0,m=ms%3600/60|0,s=ms%60;return(h?h+':':'')+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')};
+const lab=i=>'К'+((i>>1)+1)+(i%2?'Б':'А');
+const L=t=>{S.log.push({t:Date.now(),x:t})};
+const resv=i=>S.q.find(e=>e.offer&&e.offer.slot==i);
+const mod=h=>{$('modal').innerHTML='<div class="box">'+h+'</div>';$('modal').hidden=false};
+const closeM=()=>{$('modal').hidden=true};
+const msg=t=>mod('<p>'+t+'</p><div class="row"><button onclick="closeM()">Хуб</button></div>');
+const all=()=>{save();stat();live()};
+function tab(n){T=n;$('t1').className=n==1?'on':'';$('t2').className=n==2?'on':'';$('t3').className=n==3?'on':'';stat();live()}
+function stat(){
+ if(T==1){
+  if(!S.me){$('st').innerHTML='<div class="card"><h3>Сабти ном (як бор)</h3><input id="ph" inputmode="tel" placeholder="Рақами телефон"><input id="cr" placeholder="Рақами мошин"><div class="row"><button onclick="reg()">Дохил шудан</button></div></div>';return}
+  $('st').innerHTML='<div class="card">'+esc(S.me.car)+' · '+esc(S.me.phone)+' <button class="s" style="padding:4px 8px;float:right" onclick="S.me=null;all()">Иваз</button></div>';return}
+ if(T==2){$('st').innerHTML='';return}
+ if(!adm){$('st').innerHTML='<div class="card"><h3>Соҳиб</h3><input id="pn" type="password" inputmode="numeric" placeholder="PIN (аввал: 1234)"><div class="row"><button onclick="if($(\'pn\').value.trim()==String(S.pin).trim()){adm=true;all()}else msg(\'PIN нодуруст\')">Дохил</button></div></div>';return}
+ $('st').innerHTML=ownerH();return;
+ $('st').innerHTML='<div class="card"><h3>Танзимот</h3><label class="mu">Нарх барои 1% (сомонӣ)</label><input type="number" value="'+S.price+'" onchange="S.price=+this.value||0;save()"><label class="mu">Баъд аз чанд дақиқа «тез холӣ мешавад»</label><input type="number" value="'+S.over+'" onchange="S.over=+this.value||60;save()"><label class="mu">Суръати заряд (% дар 1 дақиқа) барои ҳисоби зинда</label><input type="number" step="0.1" value="'+S.rate+'" onchange="S.rate=+this.value||1;save()"><label class="mu">Ҳисоб аз рӯи</label><select style="width:100%;padding:10px;border-radius:10px;margin:4px 0" onchange="S.mode=this.value;save()"><option value="pct"'+(S.mode=='pct'?' selected':'')+'>Фоиз (кассир дастӣ менависад)</option><option value="time"'+(S.mode=='time'?' selected':'')+'>Вақт (худкор, аз рӯи дақиқа)</option></select><label class="mu">Нархи 1 дақиқа (фақат барои ҳолати «Вақт»)</label><input type="number" step="0.1" value="'+S.pmin+'" onchange="S.pmin=+this.value||1;save()"><label style="display:block;margin:8px 0"><input type="checkbox" '+(S.live?'checked':'')+' onchange="S.live=this.checked?1:0;save()" style="width:auto"> Ҳисоби зиндаро ба ронанда нишон додан</label><label class="mu">QR-коди «Душанбе Сити» (расм)</label><input type="file" accept="image/*" onchange="qrUp(this)">'+(S.qrImg?'<img src="'+S.qrImg+'" style="width:90px;background:#fff;padding:4px;border-radius:6px">':'')+'<label class="mu">WhatsAppи раис (бо рамзи кишвар, масалан 992900000000)</label><input value="'+esc(S.wa)+'" onchange="S.wa=this.value.replace(/\\D/g,\'\');save()"></div>'}
+function reg(){const p=$('ph').value.trim(),c=$('cr').value.trim();if(!p||!c)return msg('Телефон ва рақами мошинро пур кунед');S.me={phone:p,car:c};all()}
+function cell(i){const s=S.slots[i],r=resv(i),hasQ=S.q.some(e=>!e.offer);
+ if(s){const ov=Date.now()-s.start>S.over*6e4;return'<div class="cell '+(ov?'blink':'y')+(hasQ?' q':'')+'" onclick="slot('+i+')"><span class="c">🚗</span><b>'+esc(s.car)+'</b>'+dur(Date.now()-s.start)+'<span>'+s.p0+'%</span></div>'}
+ if(r)return'<div class="cell b" onclick="slot('+i+')"><span class="c">⏳</span>Навбат<br>'+esc(r.car)+'<br>'+dur(r.offer.until-Date.now())+'</div>';
+ return'<div class="cell g" onclick="slot('+i+')"><span class="c">⚡</span>Холӣ<br>'+lab(i)+'</div>'}
+function sp(i){const s=S.slots[i],r=resv(i),pq=S.req.find(x=>x.slot==i);if(pq&&!s)return'<div class="sp b" onclick="slot('+i+')"><span class="c">📩</span>Интизор</div>';
+ if(S.block.includes(i))return'<div class="sp x" onclick="slot('+i+')"><span class="c">🔒</span>'+lab(i)+'</div>';
+ if(s){const ov=Date.now()-s.start>S.over*6e4;return'<div class="sp '+(ov?'blink':'y')+'" onclick="slot('+i+')"><span class="c">🚗</span>'+dur(Date.now()-s.start)+'<br>'+s.p0+'%</div>'}
+ if(r)return'<div class="sp b" onclick="slot('+i+')"><span class="c">⏳</span>'+dur(r.offer.until-Date.now())+'</div>';
+ return'<div class="sp g" onclick="slot('+i+')">'+lab(i)+'</div>'}
+function scene(){let h='<div class="scene"><div class="wall"></div><div class="urow">';
+ for(let c=0;c<5;c++)h+='<div class="unit"><div class="post"></div><div class="two">'+sp(c*2)+sp(c*2+1)+'</div></div>';
+ h+='</div>'+(S.q.length?'<div class="ql">':'<div class="ql" style="display:none">');
+ for(let k=0;k<5;k++){const e=S.q[k];h+=e?'<div class="qs f"><span class="c">🚗</span>'+(k+1)+(e.offer?' ⏳':'')+'</div>':'<div></div>'}
+ return h+'</div></div>'}
+function live(){rq();
+ let h=T==3?'':my()+scene()+'<p class="mu">🟩 холӣ · 🟨 банд (заряд мешавад) · 🟥 навбат (поён) · сабзи милдир = тез холӣ мешавад · сутунҳои хокистарӣ = 5 калонка</p>';
+ if(S.q.length&&T!=3)h+='<div class="card"><b>Навбат ('+S.q.length+')</b><br>'+S.q.map((e,i)=>(i+1)+'. '+esc(e.car)+' '+esc(e.phone)+(e.offer?' — даъват шуд':'')).join('<br>')+'</div>';
+ if(T==2)h+='<div class="card"><button class="rd" style="width:100%" onclick="closeShift()">Пӯшидани смена</button><p class="mu">Аз '+new Date(S.shiftStart).toLocaleString('ru')+' то ҳозир ҳамаи корҳо ба накладной меравад.</p></div>';
+ if(T==3&&adm){
+  const tot=S.ses.reduce((a,s)=>({m:a.m+s.min,p:a.p+(s.p1-s.p0),$:a.$+s.sum}),{m:0,p:0,$:0});
+  if(sec=='day')h+='<div class="card"><h3>Архиви имрӯз</h3>'+(S.ses.length?'<div style="overflow:auto"><table><tr><th>Мошин</th><th>Дақ.</th><th>%</th><th>Пул</th></tr>'+S.ses.map(s=>'<tr><td>'+esc(s.car)+'<br><span class="mu">'+esc(s.phone)+'</span></td><td>'+s.min+'</td><td>'+s.p0+'→'+s.p1+'</td><td>'+s.sum+'</td></tr>').join('')+'<tr><th>Ҷамъ: '+S.ses.length+'</th><th>'+tot.m+'</th><th>'+tot.p+'%</th><th>'+tot.$+'</th></tr></table></div>':'<span class="mu">Холӣ</span>')+'</div>';
+  if(sec=='log')h+='<div class="card"><h3>Журнал</h3><div class="lg">'+S.log.slice().reverse().map(l=>hm(l.t)+' — '+l.x).join('<br>')+'</div></div>';
+  if(sec=='mon')h+='<div class="card"><h3>Архиви моҳона</h3>'+(S.arch.length?S.arch.map((a,i)=>'<div class="row"><span style="flex:2">'+new Date(a.d).toLocaleDateString('ru')+' · '+a.ses.reduce((x,s)=>x+s.sum,0)+' с.</span><button class="s" onclick="inv('+i+')">Кушодан</button></div>').join(''):'<span class="mu">Холӣ</span>')+'<p class="mu">Баъд аз 1 моҳ худкор нест мешавад.</p></div>'}
+ $('live').innerHTML=h}
+const mine=()=>S.me&&(S.slots.some(s=>s&&s.phone==S.me.phone)||S.req.some(r=>r.phone==S.me.phone));
+const inQ=()=>S.me&&S.q.some(e=>e.phone==S.me.phone);
+function slot(i){const s=S.slots[i],r=resv(i);
+ if(T==3)return;
+ if(T==2){if(s)return finM(i);if(S.req.find(x=>x.slot==i))return msg('Боло дархостро Қабул ё Рад кунед');if(r)return msg('Ин ҷой барои навбатдор нигоҳ дошта шудааст');return blkM(i)}
+ if(!S.me)return msg('Аввал сабти ном кунед');
+ if(S.block.includes(i))return msg('Ин калонка кор намекунад');
+ if(s){if(s.phone==S.me.phone)return finM(i);if(mine())return msg('Шумо аллакай заряд мекунед');if(inQ())return msg('Шумо аллакай дар навбатед');S.q.push({phone:S.me.phone,car:S.me.car,pref:i,t:Date.now()});L(S.me.car+' ба навбат истод ('+lab(i)+')');all();return msg('Шумо ба навбат истодед. Вақти навбат расад, паём меояд.')}
+ if(S.req.find(x=>x.slot==i))return msg('Ин ҷой интизори тасдиқи кассир аст');if(r){if(r.phone==S.me.phone)return offM(r);return msg('Ин калонка барои навбатдор нигоҳ дошта шудааст')}
+ if(mine())return msg('Шумо аллакай заряд мекунед');
+ if(inQ())return msg('Шумо дар навбатед');
+ startM(i)}
+function startM(i){mod('<h3>Калонка '+lab(i)+'</h3><label>Чанд фоиз монд? (заряди ҳозира %)</label><input id="pc" type="number" min="0" max="100" inputmode="numeric"><div class="row"><button class="gr" onclick="doStart('+i+')">Фиристодан ба кассир</button><button class="s" onclick="closeM()">Бекор</button></div>')}
+function doStart(i){const p=+$('pc').value;if(isNaN(p)||p<0||p>100||$('pc').value==='')return;
+ S.q=S.q.filter(e=>e.phone!=S.me.phone);S.req.push({id:Date.now(),phone:S.me.phone,car:S.me.car,slot:i,p0:p});
+ L(S.me.car+' ('+S.me.phone+') '+lab(i)+' — дархост бо '+p+'%');closeM();all();msg('Дархост ба кассир фиристода шуд. Интизор шавед.')}
+function finM(i){const s=S.slots[i];mod('<h3>Итмом · '+lab(i)+'</h3><p>'+esc(s.car)+' · '+dur(Date.now()-s.start)+' · аз '+s.p0+'%</p><label>'+(S.mode=='time'?'Заряди охирин % (шарт нест, худкор ҳисоб мешавад)':'Чанд фоиз гирифт? (заряди охирин %)')+'</label><input id="pc" type="number" min="0" max="100" inputmode="numeric"><div class="row"><button class="rd" onclick="doFin('+i+')">Итмом</button><button class="s" onclick="closeM()">Бекор</button></div>')}
+function doFin(i){const s=S.slots[i],v=$('pc').value;if(v===''&&S.mode!='time')return;const ex=(Date.now()-s.start)/6e4,min=Math.max(1,Math.round(ex)),est=Math.round(Math.min(100,s.p0+ex*S.rate)),p1=v===''?est:Math.max(s.p0,Math.min(100,+v)),sum=S.mode=='time'?Math.round(ex*S.pmin*100)/100:Math.round((p1-s.p0)*S.price);
+ S.ses.push({car:s.car,phone:s.phone,slot:lab(i),t0:s.start,t1:Date.now(),min,p0:s.p0,p1,sum});
+ L(s.car+' '+lab(i)+' тамом: '+min+' дақ., '+s.p0+'→'+p1+'%, '+sum+' сомонӣ');S.slots[i]=null;offNext(i);const R={id:Date.now(),est:v==='',phone:s.phone,car:s.car,min,p0:s.p0,p1,sum,exp:Date.now()+864e5};S.rc.push(R);all();rcM(R)}
+function qrUp(el){const f=el.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{if(r.result.length>4e5)return msg('Расм калон аст (то 300KB)');S.qrImg=r.result;save();stat()};r.readAsDataURL(f)}
+function rcM(R){if(!R)return;mod('<div style="text-align:center"><div class="mu">'+esc(R.car)+' · '+R.min+' дақ.</div><div style="font-size:46px;font-weight:800;color:var(--g)">'+R.sum+' сомонӣ</div><div>Фоиз буд: <b>'+R.p0+'%</b> → шуд: <b>'+R.p1+'%</b></div><div style="font-size:24px;font-weight:800;margin:6px 0">Ҳамагӣ харид: '+(R.est?'≈':'')+(R.p1-R.p0)+'%</div>'+(S.qrImg?'<img src="'+S.qrImg+'" style="width:220px;max-width:100%;background:#fff;padding:8px;border-radius:10px"><div class="mu">Бо «Душанбе Сити» пардохт кунед</div>':'<p class="mu">QR ворид нашудааст (Соҳиб → Танзимот)</p>')+'<div class="row"><button onclick="closeM()">Пӯшидан</button></div></div>')}
+function my(){if(T!=1||!S.me)return'';let o='';S.req.filter(r=>r.phone==S.me.phone).forEach(r=>{o+='<div class="card">⏳ Дархости шумо ('+lab(r.slot)+', '+r.p0+'%) ба кассир рафт. Интизор шавед.</div>'});S.nt.filter(n=>n.phone==S.me.phone&&n.exp>Date.now()).forEach(n=>{o+='<div class="card" data-i="'+n.id+'" onclick="S.nt=S.nt.filter(x=>x.id!=this.dataset.i);all()">'+n.x+' <span class="mu">(пӯшидан)</span></div>'});const k=S.slots.findIndex(s=>s&&s.phone==S.me.phone);
+ if(k>=0&&S.live){const s=S.slots[k],m=(Date.now()-s.start)/6e4,pc=Math.min(100-s.p0,m*S.rate);o+='<div class="card" style="text-align:center"><div class="mu">Ҳозир ҳисоб мешавад ('+lab(k)+')</div><div style="font-size:40px;font-weight:800;color:var(--g)">'+(S.mode=='time'?m*S.pmin:pc*S.price).toFixed(2)+' с.</div><div class="mu">≈'+pc.toFixed(1)+'% · '+dur(Date.now()-s.start)+' · '+(S.mode=='time'?'ҳисоб аз рӯи вақт':'нархи ниҳоиӣ аз рӯи фоизи воқеӣ')+'</div></div>'}
+ S.rc.filter(r=>r.phone==S.me.phone&&r.exp>Date.now()).forEach(r=>{o+='<div class="card" onclick="rcM(S.rc.find(x=>x.id=='+r.id+'))">🧾 '+hm(r.id)+' · <b>'+r.sum+' с.</b> · '+r.p0+'→'+r.p1+'% <span class="mu">(чек, 24 соат)</span></div>'});return o}
+function sc(s){sec=s;stat();live()}
+function ownerH(){const b=(k,t)=>'<button class="'+(sec==k?'':'s')+'" style="min-width:45%;margin-bottom:6px" data-k="'+k+'" onclick="sc(this.dataset.k)">'+t+'</button>';
+ let h='<div class="card"><div class="row" style="flex-wrap:wrap">'+b('set','⚙️ Танзимот')+b('log','📒 Журнал')+b('day','🧾 Архиви имрӯз')+b('mon','📦 Архиви моҳона')+'</div></div>';
+ if(sec=='set')h+='<div class="card"><h3>Танзимот</h3><label class="mu">Нарх барои 1% (сомонӣ)</label><input type="number" value="'+S.price+'" onchange="S.price=+this.value||0;save()"><label class="mu">Рамзи пӯшидани смена (кассир ворид мекунад)</label><input value="'+esc(S.code)+'" onchange="S.code=this.value.trim()||S.code;save()"><label class="mu">WhatsAppи раис (бо рамзи кишвар, масалан 992900000000)</label><input value="'+esc(S.wa)+'" onchange="S.wa=this.value.replace(/[^0-9]/g,[]);save()"><label class="mu">QR-коди «Душанбе Сити» (расм)</label><input type="file" accept="image/*" onchange="qrUp(this)">'+(S.qrImg?'<img src="'+S.qrImg+'" style="width:90px;background:#fff;padding:4px;border-radius:6px">':'')+'<label class="mu">PINи Соҳиб</label><input value="'+esc(S.pin)+'" onchange="S.pin=this.value.trim()||S.pin;save()"></div>';
+ return h}
+let rqH='';
+function rq(){let h='';if(T==2)h=S.req.map(r=>'<div class="card" style="border:2px solid var(--b)"><b>📩 Дархости нав</b><br>'+esc(r.car)+' · '+esc(r.phone)+'<br>Калонка <b>'+lab(r.slot)+'</b> · заряд: <b>'+r.p0+'%</b><div class="row"><button class="gr" data-i="'+r.id+'" onclick="accReq(this.dataset.i)">Қабул</button><button class="rd" data-i="'+r.id+'" onclick="rejReq(this.dataset.i)">Рад</button></div></div>').join('');if(h!==rqH){rqH=h;$('rq').innerHTML=h}}
+function accReq(id){const r=S.req.find(x=>x.id==id);if(!r)return;S.req=S.req.filter(x=>x!==r);S.slots[r.slot]={phone:r.phone,car:r.car,start:Date.now(),p0:r.p0};L(r.car+' ('+r.phone+') '+lab(r.slot)+' — қабул шуд, оғоз бо '+r.p0+'%');S.nt.push({id:Date.now(),phone:r.phone,x:'✅ Кассир қабул кард. Заряд оғоз шуд ('+lab(r.slot)+').',exp:Date.now()+6e5});all()}
+function rejReq(id){const r=S.req.find(x=>x.id==id);if(!r)return;S.req=S.req.filter(x=>x!==r);L(r.car+' ('+r.phone+') '+lab(r.slot)+' — кассир рад кард');S.nt.push({id:Date.now(),phone:r.phone,x:'❌ Кассир дархостро рад кард.',exp:Date.now()+6e5});offNext(r.slot);all()}
+function blkM(i){const b=S.block.includes(i);mod('<h3>'+lab(i)+'</h3><p>'+(b?'Калонка маҳкам аст. Кушодан?':'Ин калонкаро маҳкам кунем (кор намекунад)?')+'</p><div class="row"><button class="'+(b?'gr':'rd')+'" onclick="doBlk('+i+')">'+(b?'Кушодан':'Маҳкам кардан')+'</button><button class="s" onclick="closeM()">Бекор</button></div>')}
+function doBlk(i){const k=S.block.indexOf(i);if(k>=0){S.block.splice(k,1);L(lab(i)+' кушода шуд');offNext(i)}else{S.block.push(i);L(lab(i)+' маҳкам шуд')}closeM();all()}
+function offNext(i){if(S.slots[i]||S.block.includes(i))return;const c=S.q.find(e=>!e.offer&&e.pref==i)||S.q.find(e=>!e.offer);if(c){c.offer={slot:i,until:Date.now()+3e5};L('Навбат ба '+c.car+' расид ('+lab(i)+')')}}
+function offM(r){mod('<h3>Навбати шумо расид!</h3><p>Калонка '+lab(r.offer.slot)+' холӣ шуд. Ои мехоҳед пур кунед?</p><p class="mu">Агар 5 дақиқа ҷавоб надиҳед, худкор рад мешавад.</p><div class="row"><button class="gr" onclick="accO()">Ҳа</button><button class="rd" onclick="decO()">Не</button></div>')}
+function accO(){const r=S.q.find(e=>e.phone==S.me.phone&&e.offer);if(r)startM(r.offer.slot)}
+function decO(){const r=S.q.find(e=>e.phone==S.me.phone&&e.offer);if(r){S.q=S.q.filter(e=>e!==r);L(r.car+' навбатро рад кард');offNext(r.offer.slot)}closeM();all()}
+function closeShift(){if(S.req.length)return msg('Аввал дархостҳоро Қабул ё Рад кунед');if(S.slots.some(Boolean))return msg('Аввал ҳамаи калонкаҳоро бо «Итмом» пӯшед');mod('<h3>Рамзи пӯшидани смена</h3><input id="cc" type="password" inputmode="numeric" placeholder="Рамз"><div class="row"><button class="rd" onclick="doClose()">Пӯшидани смена</button><button class="s" onclick="closeM()">Бекор</button></div>')}
+function doClose(){if($('cc').value!=S.code)return msg('Рамз нодуруст');if(S.slots.some(Boolean))return msg('Аввал ҳамаи калонкаҳоро бо «Итмом» пӯшед');
+ S.arch.push({d:Date.now(),from:S.shiftStart,ses:S.ses.slice(),log:S.log.slice()});S.shiftStart=Date.now();const i=S.arch.length-1;S.ses=[];S.log=[];S.q=[];save();inv(i,true);stat();live()}
+function inv(i,wa){const a=S.arch[i],t=a.ses.reduce((x,s)=>({m:x.m+s.min,p:x.p+s.p1-s.p0,$:x.$+s.sum}),{m:0,p:0,$:0});
+ const txt='⚡ Накладной — '+new Date(a.d).toLocaleDateString('ru')+'\n'+a.ses.map((s,n)=>(n+1)+'. '+s.car+' · '+s.min+' дақ · '+s.p0+'→'+s.p1+'% · '+s.sum+' с.').join('\n')+'\nҶамъ: '+a.ses.length+' мошин, '+t.m+' дақ, '+t.p+'%, '+t.$+' сомонӣ'+(a.log&&a.log.length?'\n\nВоқеаҳо:\n'+a.log.map(l=>hm(l.t)+' '+l.x).join('\n'):'');
+ mod('<h3>Накладной · '+new Date(a.d).toLocaleDateString('ru')+'</h3><p class="mu">Смена: '+(a.from?new Date(a.from).toLocaleString('ru'):'')+' → '+new Date(a.d).toLocaleString('ru')+'</p><table><tr><th>#</th><th>Мошин</th><th>Вақт</th><th>Дақ</th><th>%</th><th>Пул</th></tr>'+a.ses.map((s,n)=>'<tr><td>'+(n+1)+'</td><td>'+esc(s.car)+'</td><td>'+hm(s.t0)+'–'+hm(s.t1)+'</td><td>'+s.min+'</td><td>'+s.p0+'→'+s.p1+'</td><td>'+s.sum+'</td></tr>').join('')+'<tr><th colspan="3">Ҷамъ</th><th>'+t.m+'</th><th>'+t.p+'</th><th>'+t.$+'</th></tr></table>'+(a.log&&a.log.length?'<h3>Воқеаҳо</h3><div class="mu">'+a.log.map(l=>hm(l.t)+' — '+l.x).join('<br>')+'</div>':'')+'<div class="row noprint"><button onclick="window.print()">PDF / Чоп</button><a style="flex:1;display:flex" href="https://wa.me/'+S.wa+'?text='+encodeURIComponent(txt)+'" target="_blank" rel="noopener"><button class="gr" style="flex:1">WhatsApp</button></a></div><div class="row noprint"><button class="s" onclick="closeM()">Пӯшидан</button></div>'+(S.wa?'':'<p class="mu noprint">Рақами WhatsApp-ро дар Танзимот ворид кунед.</p>'))}
+setInterval(()=>{let ch=false;const n=Date.now();if(T==2){const a=S.rc.length;S.rc=S.rc.filter(r=>r.exp>n);if(S.rc.length!=a)ch=true}
+ if(T==2)S.q.slice().forEach(e=>{if(e.offer&&n>e.offer.until){S.q=S.q.filter(x=>x!==e);L('⚠️ '+e.car+' ('+e.phone+') ба вақт наомад — худкор рад шуд');offNext(e.offer.slot);ch=true}});
+ if(ch){save();stat()}
+ if(T==1&&S.me&&$('modal').hidden){const r=S.q.find(e=>e.phone==S.me.phone&&e.offer);if(r)offM(r)}
+ live()},1000);
+T=QP.has('kassir')?2:QP.has('sohib')?3:1;if(!QP.has('all'))$('nav').style.display='none';tab(T);conn();
+</script></body></html>
