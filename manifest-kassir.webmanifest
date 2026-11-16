@@ -1,0 +1,1 @@
+{"name": "Кассир — EV ЗАРЯДКА", "short_name": "EV Кассир", "start_url": "kassir.html", "scope": "./", "display": "standalone", "background_color": "#ffffff", "theme_color": "#0d6b2f", "icons": [{"src": "icon-192.png", "sizes": "192x192", "type": "image/png"}, {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"}]}

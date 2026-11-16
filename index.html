@@ -44,7 +44,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:4px;borde
 <div id="modal" hidden></div>
 <script>
 const K='ev1_'+(new URLSearchParams(location.search).get('st')||'0'),$=id=>document.getElementById(id);
-const QP=new URLSearchParams(location.search);const ST=QP.get('st')||'',LIST=!ST;const ROLE=QP.has('kassir')?'kassir':QP.has('sohib')?'sohib':'';const DB_FIXED='https://zaryadka-90ac9-default-rtdb.asia-southeast1.firebasedatabase.app';const DB=(DB_FIXED||QP.get('db')||(()=>{try{return localStorage.getItem('evdb')}catch(e){}})()||'').replace(/\/+$/,'');if(QP.get('db'))try{localStorage.setItem('evdb',DB)}catch(e){}
+const QP=new URLSearchParams(location.search);const ST=QP.get('st')||'',LIST=!ST;const ROLE=((document.querySelector('meta[name=evrole]')||{}).content)||(QP.has('kassir')?'kassir':QP.has('sohib')?'sohib':'');const DB_FIXED='https://zaryadka-90ac9-default-rtdb.asia-southeast1.firebasedatabase.app';const DB=(DB_FIXED||QP.get('db')||(()=>{try{return localStorage.getItem('evdb')}catch(e){}})()||'').replace(/\/+$/,'');if(QP.get('db'))try{localStorage.setItem('evdb',DB)}catch(e){}
 const D={block:[],shiftStart:Date.now(),slots:Array(10).fill(null),q:[],log:[],ses:[],arch:[],price:2,rate:1,mode:'pct',live:0,pmin:1,code:'0000',req:[],nt:[],name:'',res:[],loc:null,addr:'',rc:[],qrImg:'',wa:'',pin:'1234',over:60,me:null};
 let S=D;try{const s=JSON.parse(localStorage.getItem(K));if(s)S=Object.assign({},D,s)}catch(e){}try{S.me=JSON.parse(localStorage.getItem('evme')||'null')}catch(e){}
 S.arch=S.arch.filter(a=>Date.now()-a.d<30*864e5);S.mode='pct';S.live=0;S.rc=S.rc.filter(r=>r.exp>Date.now());
