@@ -44,17 +44,23 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:4px;borde
 <div id="modal" hidden></div>
 <script>
 const K='ev1_'+(new URLSearchParams(location.search).get('st')||'0'),$=id=>document.getElementById(id);
-const QP=new URLSearchParams(location.search);const ST=QP.get('st')||'',LIST=!ST;const DB_FIXED='https://zaryadka-90ac9-default-rtdb.asia-southeast1.firebasedatabase.app';const DB=(DB_FIXED||QP.get('db')||(()=>{try{return localStorage.getItem('evdb')}catch(e){}})()||'').replace(/\/+$/,'');if(QP.get('db'))try{localStorage.setItem('evdb',DB)}catch(e){}
+const QP=new URLSearchParams(location.search);const ST=QP.get('st')||'',LIST=!ST;const ROLE=QP.has('kassir')?'kassir':QP.has('sohib')?'sohib':'';const DB_FIXED='https://zaryadka-90ac9-default-rtdb.asia-southeast1.firebasedatabase.app';const DB=(DB_FIXED||QP.get('db')||(()=>{try{return localStorage.getItem('evdb')}catch(e){}})()||'').replace(/\/+$/,'');if(QP.get('db'))try{localStorage.setItem('evdb',DB)}catch(e){}
 const D={block:[],shiftStart:Date.now(),slots:Array(10).fill(null),q:[],log:[],ses:[],arch:[],price:2,rate:1,mode:'pct',live:0,pmin:1,code:'0000',req:[],nt:[],name:'',res:[],rc:[],qrImg:'',wa:'',pin:'1234',over:60,me:null};
 let S=D;try{const s=JSON.parse(localStorage.getItem(K));if(s)S=Object.assign({},D,s)}catch(e){}try{S.me=JSON.parse(localStorage.getItem('evme')||'null')}catch(e){}
 S.arch=S.arch.filter(a=>Date.now()-a.d<30*864e5);S.mode='pct';S.live=0;S.rc=S.rc.filter(r=>r.exp>Date.now());
 const SH=['slots','q','req','ses','log','nt','rc','arch','block','price','wa','pin','code','qrImg','shiftStart','over','name','res'];
 let last={},ready=0,rt,SUM={},lh='',lastSum='';
-function lst(){let h='<h3 style="margin:6px 0">Заправкаро интихоб кунед</h3>';for(let i=1;i<=10;i++){const x=SUM[i]||{n:'Заправка '+i,f:10,t:10,q:0};h+='<div class="card" style="display:flex;align-items:center;gap:8px;cursor:pointer" data-i="'+i+'" onclick="go(this.dataset.i)"><div style="flex:1"><b>'+esc(x.n)+'</b><br><span class="mu">Ҷои холӣ: <b style="color:var(--g)">'+x.f+'</b> / '+x.t+(x.q?' · навбат: <b style="color:var(--r)">'+x.q+'</b>':'')+'</span></div><span style="font-size:24px">›</span></div>'}if(h!==lh){lh=h;$('live').innerHTML=h}}
+function hh(p){let h=5381;p=String(p);for(let i=0;i<p.length;i++)h=((h<<5)+h+p.charCodeAt(i))|0;return (h>>>0).toString(36)}
+function lst(){const me=S.me?hh(S.me.phone):'';let h='<h3 style="margin:6px 0">Заправкаро интихоб кунед</h3>';
+ for(let i=1;i<=10;i++){const x=SUM[i]||{n:'Заправка '+i,f:10,t:10,q:0};let c='',lb='';const has=a=>me&&a&&a.includes(me);
+  if(has(x.c)){c='#f0b400';lb='⚡ Шумо дар ин заправка заряд мекунед'}else if(has(x.r)){c='#ff5c9d';lb='🎀 Шумо дар ин заправка забт кардаед'}else if(has(x.w)){c='#3b7ddd';lb='📩 Дархости шумо ба кассир рафтааст'}else if(has(x.u)){c='#d9363e';lb='⏳ Шумо дар навбатед'}
+  h+='<div class="card" style="display:flex;align-items:center;gap:8px;cursor:pointer;'+(c?'border:3px solid '+c+';box-shadow:0 0 12px '+c+'99':'')+'" data-i="'+i+'" onclick="go(this.dataset.i)"><div style="flex:1"><b>'+esc(x.n)+'</b><br><span class="mu">Ҷои холӣ: <b style="color:var(--g)">'+x.f+'</b> / '+x.t+(x.q?' · навбат: <b style="color:var(--r)">'+x.q+'</b>':'')+'</span>'+(lb?'<br><b style="color:'+c+'">'+lb+'</b>':'')+'</div><span style="font-size:24px">›</span></div>'}
+ if(h!==lh){lh=h;$('live').innerHTML=h}}
+function lstOld(){let h='<h3 style="margin:6px 0">Заправкаро интихоб кунед</h3>';for(let i=1;i<=10;i++){const x=SUM[i]||{n:'Заправка '+i,f:10,t:10,q:0};h+='<div class="card" style="display:flex;align-items:center;gap:8px;cursor:pointer" data-i="'+i+'" onclick="go(this.dataset.i)"><div style="flex:1"><b>'+esc(x.n)+'</b><br><span class="mu">Ҷои холӣ: <b style="color:var(--g)">'+x.f+'</b> / '+x.t+(x.q?' · навбат: <b style="color:var(--r)">'+x.q+'</b>':'')+'</span></div><span style="font-size:24px">›</span></div>'}if(h!==lh){lh=h;$('live').innerHTML=h}}
 function go(i){const p=new URLSearchParams();if(QP.has('kassir'))p.set('kassir','');else if(QP.has('sohib'))p.set('sohib','');p.set('st',i);location.search='?'+p}
 function lu(p,d){if(p=='/'){SUM={};for(const k in (d||{}))try{SUM[k]=JSON.parse(d[k])}catch(e){}}else try{SUM[p.slice(1)]=JSON.parse(d)}catch(e){}lst()}
-function bk(){const r=QP.has('kassir')?'kassir':QP.has('sohib')?'sohib':'';$('bk').innerHTML=ST?'<a href="?'+r+'" style="color:var(--b)">‹ Ҳамаи заправкаҳо</a> · <b>'+esc(S.name||'Заправка '+ST)+'</b>':''}
-function psum(){if(!DB||!ST)return;const t=S.slots.length-S.block.length;let f=0;S.slots.forEach((s,i)=>{if(!s&&!S.block.includes(i)&&!resv(i)&&!resvd(i)&&!S.req.find(x=>x.slot==i))f++});const j=JSON.stringify({n:S.name||'Заправка '+ST,f,t,q:S.q.length});if(j===lastSum)return;lastSum=j;fetch(DB+'/sum/'+ST+'.json',{method:'PUT',body:JSON.stringify(j)}).catch(()=>{lastSum=''})}
+function bk(){if(ROLE){$('bk').innerHTML='<a href="#" onclick="logout();return false" style="color:var(--b)">Баромадан</a> · <b>'+esc(S.name||'Заправка '+ST)+'</b>';return}const r='';$('bk').innerHTML=ST?'<a href="?'+r+'" style="color:var(--b)">‹ Ҳамаи заправкаҳо</a> · <b>'+esc(S.name||'Заправка '+ST)+'</b>':''}
+function psum(){if(!DB||!ST)return;const t=S.slots.length-S.block.length;let f=0;S.slots.forEach((s,i)=>{if(!s&&!S.block.includes(i)&&!resv(i)&&!resvd(i)&&!S.req.find(x=>x.slot==i))f++});const j=JSON.stringify({n:S.name||'Заправка '+ST,f,t,q:S.q.length,c:S.slots.filter(Boolean).map(s=>hh(s.phone)),r:S.res.filter(x=>x.until>Date.now()).map(x=>hh(x.phone)),w:S.req.map(x=>hh(x.phone)),u:S.q.map(x=>hh(x.phone))});if(j===lastSum)return;lastSum=j;fetch(DB+'/sum/'+ST+'.json',{method:'PUT',body:JSON.stringify(j)}).catch(()=>{lastSum=''})}
 function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}try{localStorage.setItem('evme',JSON.stringify(S.me))}catch(e){}if(ready){SH.forEach(k=>pk(k));psum()}}
 function pk(k){if(!DB)return;const j=JSON.stringify(S[k]);if(j===undefined||j===last[k])return;last[k]=j;fetch(DB+'/st/'+ST+'/s/'+k+'.json',{method:'PUT',body:JSON.stringify(j)}).catch(()=>{last[k]=0})}
 function sv(t){const e=$('sv');if(e)e.textContent=t}
@@ -102,7 +108,7 @@ function scene(){let h='<div class="scene"><div class="wall"></div><div class="u
  h+='</div>'+(S.q.length?'<div class="ql">':'<div class="ql" style="display:none">');
  for(let k=0;k<5;k++){const e=S.q[k];h+=e?'<div class="qs f"><span class="c">🚗</span>'+(k+1)+(e.offer?' ⏳':'')+'</div>':'<div></div>'}
  return h+'</div></div>'}
-function live(){if(LIST)return lst();rq2();
+function live(){if(LIST)return ROLE?0:lst();rq2();
  let h=T==3?'':my()+scene()+'<p class="mu">🟩 холӣ · 🟨 банд (заряд мешавад) · 🟥 навбат (поён) · сабзи милдир = тез холӣ мешавад · сутунҳои хокистарӣ = 5 калонка</p>';
  if(S.q.length&&T!=3)h+='<div class="card"><b>Навбат ('+S.q.length+')</b><br>'+S.q.map((e,i)=>(i+1)+'. '+esc(e.car)+' '+esc(e.phone)+(e.offer?' — даъват шуд':'')).join('<br>')+'</div>';
  if(T==2)h+='<div class="card"><button class="rd" style="width:100%" onclick="closeShift()">Пӯшидани смена</button><p class="mu">Аз '+new Date(S.shiftStart).toLocaleString('ru')+' то ҳозир ҳамаи корҳо ба накладной меравад.</p></div>';
@@ -140,7 +146,7 @@ function my(){if(T!=1||!S.me)return'';let o='';S.req.filter(r=>r.phone==S.me.pho
 function sc(s){sec=s;stat();live()}
 function ownerH(){const b=(k,t)=>'<button class="'+(sec==k?'':'s')+'" style="min-width:45%;margin-bottom:6px" data-k="'+k+'" onclick="sc(this.dataset.k)">'+t+'</button>';
  let h='<div class="card"><div class="row" style="flex-wrap:wrap">'+b('set','⚙️ Танзимот')+b('log','📒 Журнал')+b('day','🧾 Архиви имрӯз')+b('mon','📦 Архиви моҳона')+'</div></div>';
- if(sec=='set')h+='<div class="card"><h3>Танзимот</h3><label class="mu">Номи заправка</label><input value="'+esc(S.name)+'" onchange="S.name=this.value.trim();save()"><label class="mu">Нарх барои 1% (сомонӣ)</label><input type="number" value="'+S.price+'" onchange="S.price=+this.value||0;save()"><label class="mu">Рамзи пӯшидани смена (кассир ворид мекунад)</label><input value="'+esc(S.code)+'" onchange="S.code=this.value.trim()||S.code;save()"><label class="mu">WhatsAppи раис (бо рамзи кишвар, масалан 992900000000)</label><input value="'+esc(S.wa)+'" onchange="S.wa=this.value.replace(/[^0-9]/g,[]);save()"><label class="mu">QR-коди «Душанбе Сити» (расм)</label><input type="file" accept="image/*" onchange="qrUp(this)">'+(S.qrImg?'<img src="'+S.qrImg+'" style="width:90px;background:#fff;padding:4px;border-radius:6px">':'')+'<label class="mu">PINи Соҳиб</label><input value="'+esc(S.pin)+'" onchange="S.pin=this.value.trim()||S.pin;save()"></div>';
+ if(sec=='set')h+='<div class="card"><h3>Танзимот</h3><label class="mu">Номи заправка</label><input value="'+esc(S.name)+'" onchange="S.name=this.value.trim();save()"><label class="mu">Нарх барои 1% (сомонӣ)</label><input type="number" value="'+S.price+'" onchange="S.price=+this.value||0;save()"><label class="mu">Рамзи кассир (барои воридшавӣ ва пӯшидани смена)</label><input value="'+esc(S.code)+'" onchange="S.code=this.value.trim()||S.code;save()"><label class="mu">WhatsAppи раис (бо рамзи кишвар, масалан 992900000000)</label><input value="'+esc(S.wa)+'" onchange="S.wa=this.value.replace(/[^0-9]/g,[]);save()"><label class="mu">QR-коди «Душанбе Сити» (расм)</label><input type="file" accept="image/*" onchange="qrUp(this)">'+(S.qrImg?'<img src="'+S.qrImg+'" style="width:90px;background:#fff;padding:4px;border-radius:6px">':'')+'<label class="mu">PINи Соҳиб</label><input value="'+esc(S.pin)+'" onchange="S.pin=this.value.trim()||S.pin;save()"></div>';
  return h}
 let rqH='';
 function rq(){let h='';if(T==2)h=S.req.map(r=>'<div class="card" style="border:2px solid var(--b)"><b>📩 Дархости нав</b><br>'+esc(r.car)+' · '+esc(r.phone)+'<br>Калонка <b>'+lab(r.slot)+'</b> · заряд: <b>'+r.p0+'%</b><div class="row"><button class="gr" data-i="'+r.id+'" onclick="accReq(this.dataset.i)">Қабул</button><button class="rd" data-i="'+r.id+'" onclick="rejReq(this.dataset.i)">Рад</button></div></div>').join('');if(h!==rqH){rqH=h;$('rq').innerHTML=h}}
@@ -159,6 +165,17 @@ function acc2(id){const r=S.req.find(x=>x.id==id);if(!r)return;const c=(($('cm'+
 function rej2(id){const r=S.req.find(x=>x.id==id);if(!r)return;const c=(($('cm'+id)||{}).value||'').trim(),cm=c?' Кассир: '+c:'';S.req=S.req.filter(x=>x!==r);L(r.car+' ('+r.phone+') '+lab(r.slot)+' — кассир рад кард'+cm);S.nt.push({id:Date.now(),phone:r.phone,x:'❌ Дархост рад шуд.'+cm,exp:Date.now()+6e5});offNext(r.slot);all()}
 function cxM(i){const x=resvd(i);mod('<h3>'+lab(i)+' · забт</h3><p>'+esc(x.car)+' · боқӣ '+dur(x.until-Date.now())+'</p><div class="row"><button class="rd" onclick="cx('+i+')">Бекор кардани забт</button><button class="s" onclick="closeM()">Боз на</button></div>')}
 function cx(i){const x=resvd(i);if(x){S.res=S.res.filter(y=>y!==x);L(x.car+' '+lab(i)+' — забтро кассир бекор кард');S.nt.push({id:Date.now(),phone:x.phone,x:'⚠️ Кассир забти '+lab(i)+'-ро бекор кард.',exp:Date.now()+6e5});offNext(i)}closeM();all()}
+function ses(){try{return JSON.parse(localStorage.getItem('evses')||'null')}catch(e){return null}}
+function logout(){try{localStorage.removeItem('evses')}catch(e){}location.search='?'+ROLE}
+function lo(){return [1,2,3,4,5,6,7,8,9,10].map(i=>'<option value="'+i+'"'+(ST==i?' selected':'')+'>'+esc((SUM[i]&&SUM[i].n)||'Заправка '+i)+'</option>').join('')}
+function loginUI(){$('live').innerHTML='';$('rq').innerHTML='';
+ $('st').innerHTML='<div class="card"><h3>'+(ROLE=='kassir'?'Воридшавии кассир':'Воридшавии соҳиб')+'</h3><label class="mu">Заправка</label><select id="ls" style="width:100%;padding:10px;border-radius:10px;margin:4px 0">'+lo()+'</select><label class="mu">Рамз</label><input id="lp" type="password" inputmode="numeric" placeholder="Рамз"><div class="row"><button onclick="doLogin()">Дохил</button></div><p id="le" class="mu"></p></div>';
+ if(DB)fetch(DB+'/sum.json').then(r=>r.json()).then(d=>{const sel=$('ls');if(!d||!sel)return;for(const k in d){try{SUM[k]=JSON.parse(d[k])}catch(e){}}const cur=sel.value;sel.innerHTML=lo();sel.value=cur}).catch(()=>{})}
+async function doLogin(){const st=$('ls').value,c=$('lp').value.trim(),e=$('le');e.textContent='...';let real=ROLE=='kassir'?'0000':'1234';
+ try{if(DB){const r=await fetch(DB+'/st/'+st+'/s/'+(ROLE=='kassir'?'code':'pin')+'.json');const v=await r.json();if(typeof v=='string')real=String(JSON.parse(v)).trim()}}catch(x){e.textContent='Хатои пайвастшавӣ. Интернетро санҷед.';return}
+ if(c!==real){e.textContent='Рамз нодуруст';return}
+ try{localStorage.setItem('evses',JSON.stringify({role:ROLE,st:st}))}catch(x){}
+ location.search='?'+ROLE+'&st='+st}
 function blkM(i){const b=S.block.includes(i);mod('<h3>'+lab(i)+'</h3><p>'+(b?'Калонка маҳкам аст. Кушодан?':'Ин калонкаро маҳкам кунем (кор намекунад)?')+'</p><div class="row"><button class="'+(b?'gr':'rd')+'" onclick="doBlk('+i+')">'+(b?'Кушодан':'Маҳкам кардан')+'</button><button class="s" onclick="closeM()">Бекор</button></div>')}
 function doBlk(i){const k=S.block.indexOf(i);if(k>=0){S.block.splice(k,1);L(lab(i)+' кушода шуд');offNext(i)}else{S.block.push(i);L(lab(i)+' маҳкам шуд')}closeM();all()}
 function offNext(i){if(S.slots[i]||S.block.includes(i)||resvd(i))return;const c=S.q.find(e=>!e.offer&&e.pref==i)||S.q.find(e=>!e.offer);if(c){c.offer={slot:i,until:Date.now()+3e5};L('Навбат ба '+c.car+' расид ('+lab(i)+')')}}
@@ -176,5 +193,8 @@ setInterval(()=>{let ch=false;const n=Date.now();if(T==2){const a=S.rc.length;S.
  if(ch){save();stat()}
  if(T==1&&S.me&&$('modal').hidden){const r=S.q.find(e=>e.phone==S.me.phone&&e.offer);if(r)offM(r)}
  live()},1000);
-T=QP.has('kassir')?2:QP.has('sohib')?3:1;if(!QP.has('all'))$('nav').style.display='none';tab(T);conn();
+$('nav').style.display='none';
+const SS=ses();
+if(ROLE&&!(SS&&SS.role==ROLE&&SS.st==ST)){if(SS&&SS.role==ROLE)location.search='?'+ROLE+'&st='+SS.st;else loginUI()}
+else{T=ROLE=='kassir'?2:ROLE=='sohib'?3:1;adm=ROLE=='sohib';tab(T);conn()}
 </script></body></html>
